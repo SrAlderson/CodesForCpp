@@ -1,5 +1,5 @@
 // El siguiete codigo explica como hacer una pila pasando los datos por refrencia
-// Autor: Giovanni Gonzalez
+// Autor: SrAlderson
 
 #include <iostream>
 
