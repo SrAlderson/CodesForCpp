@@ -2,7 +2,6 @@
 // Autor: SrAlderson
 
 #include <iostream>
-
 // prototipo de funciones
 struct valores insertar(int vector[5], struct valores v , int n);
 struct valores eliminar(int vector[5], struct valores v, int n);
