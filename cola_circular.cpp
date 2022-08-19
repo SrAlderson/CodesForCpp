@@ -1,5 +1,3 @@
-
-
 // El siguiete codigo explica como hacer una cola pasando los datos por estructura
 // Autor: SrAlderson
 
