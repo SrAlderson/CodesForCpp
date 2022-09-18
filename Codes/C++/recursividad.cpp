@@ -1,7 +1,7 @@
 /*El siguiente codigo tiene el objetivo de mostrar como es el
 uso de la recursividad*/
 
-//Autor: Giovanni Gonzalez
+//Autor: SrAlderson
 
 #include <stdio.h>
 #include <stdlib.h>
