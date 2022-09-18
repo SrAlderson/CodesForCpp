@@ -2,7 +2,7 @@
 haciendo el uso de listas doblemente encadanedas con el fin de 
 que se puede ordenar por agluno de los criterios del nodo*/
 
-// Autor: Giovanni Gonzalez
+// Autor: SrAlderson
 
 /*Parla de que trata el codigo*/
 
