@@ -15,8 +15,8 @@
 void insertar(struct nodo **);
 void buscarElemento (struct nodo **);
 void preOrden (struct nodo **);
-void inOrden(struct nodo *);
-void postOrden(struct nodo *);
+void inOrden(struct nodo **);
+void postOrden(struct nodo **);
 
 //Estructura del arbol
 
@@ -46,7 +46,7 @@ int main(){
                 op = 1;
             break;
             case 2:
-                //preOrden(&p);
+                preOrden(&p);
                 op = 1; 
             break;
             default:
@@ -109,7 +109,7 @@ void insertar(struct nodo **p){
 void buscarElemento (struct nodo **){
 
 }
-/*
+
 void preOrden (struct nodo **p){
     struct nodo *aux;
     aux = *p;
@@ -119,7 +119,7 @@ void preOrden (struct nodo **p){
         preOrden(aux->derecha);
     }
 
-}*/
+}
 void inOrden(struct nodo *){
 
 }
