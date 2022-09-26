@@ -14,9 +14,9 @@
 
 void insertar(struct nodo **);
 void buscarElemento (struct nodo **);
-void preOrden (struct nodo **);
-void inOrden(struct nodo **);
-void postOrden(struct nodo **);
+void preOrden (struct nodo *);
+void inOrden(struct nodo *);
+void postOrden(struct nodo *);
 
 //Estructura del arbol
 
@@ -46,7 +46,21 @@ int main(){
                 op = 1;
             break;
             case 2:
-                preOrden(&p);
+                printf("El recorrido en preOrden del arbol es: ");
+                preOrden(p);
+                printf("\n");
+                op = 1; 
+            break;
+            case 3:
+                printf("El recorrido en inOrden del arbol es: ");
+                inOrden(p);
+                printf("\n");
+                op = 1; 
+            break;
+            case 4:
+                printf("El recorrido en postOrden del arbol es: ");
+                postOrden(p);
+                printf("\n");
                 op = 1; 
             break;
             default:
@@ -79,50 +93,60 @@ void insertar(struct nodo **p){
         *p = q;
     }else{
         struct nodo *aux = *p; // Copia de P para ir recorriendo
-        //Caso 2: Cuando el dato ingresado es menor
-        while(datoF < aux ->datoN && flag == 0){
+        
+        while(flag == 0){
             //Recorrido del arbol
-            if (aux->izquierda != NULL){
-                aux = aux->izquierda;
-                flag = 0;
+            //Caso 2: Cuando el dato ingresado es menor
+            if (datoF < aux->datoN){
+                if (aux->izquierda != NULL){
+                    aux = aux->izquierda;
+                    flag = 0;
+                }else{
+                    aux->izquierda = q;
+                    flag=1;
+                }
             }else{
-                aux->izquierda = q;
-                flag=1;
+                // Caso 3: Cuando el dato ingresado es mayor
+                //Recorrido del arbol
+                if (aux->derecha != NULL){
+                    aux = aux->derecha;
+                    flag = 0; 
+                }else{
+                    aux->derecha=q;
+                    flag=1; 
+                }
             }
         }
-        // Caso 3: Cuando el dato ingresado es mayor
-        while (datoF > aux ->datoN && flag ==0){
-            //Recorrido del arbol
-            if (aux->derecha != NULL){
-                aux = aux->derecha;
-                flag = 0; 
-            }else{
-                aux->derecha=q;
-                flag=1; 
-            }
-        }
-
-
     }
-
 }
 void buscarElemento (struct nodo **){
 
 }
 
-void preOrden (struct nodo **p){
-    struct nodo *aux;
-    aux = *p;
-    if (aux!=NULL){
-        printf("%i", aux->datoN);
-        preOrden(aux->izquierda);
-        preOrden(aux->derecha);
+void preOrden (struct nodo *p){
+    
+    if (p!=NULL){
+        printf("%i\t", p->datoN);
+        preOrden(p->izquierda);
+        preOrden(p->derecha);
     }
 
 }
-void inOrden(struct nodo *){
+void inOrden(struct nodo *p){
+
+    if (p!=NULL){
+        inOrden(p->izquierda);
+        printf("%i\t", p->datoN); 
+        inOrden(p->derecha);
+    }
 
 }
-void postOrden(struct nodo *){
+void postOrden(struct nodo *p){
+
+    if (p!=NULL){
+        postOrden(p->izquierda);
+        postOrden(p->derecha);
+        printf("%i\t", p->datoN); 
+    }
 
 }
