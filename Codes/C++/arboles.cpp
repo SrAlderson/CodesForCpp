@@ -1,248 +1,214 @@
-/*El objetivo de este codigo es poder visualizar como son los
- recorridos para los arboles binarios: pre-order, in-order, post-order
- */
+/*Este es un codigo para trabjar arboles binarios
+en este caso se hace la insercion, busqueda y eliminacion de nodos
+al igual que cada uno de los recorridos*/
 
-//Autor:
+//Autor: Giovanni Gonzalez
 
 //Librerias
-
-#include <stdlib.h>
 #include <stdio.h>
-#define localizar (struct nodo *) malloc(sizeof(struct nodo)) 
+#include <stdlib.h>
+#define localizar (struct nodo *) malloc(sizeof(struct nodo))
 
-//Prototipo de funciones
+// Prototipo de funciones
 
-void insertar(struct nodo **,int datoF);
-void buscarElemento (struct nodo **, int dato);
-void eliminarNodo (struct nodo **, int datoE);
+void insertarNodo(struct nodo *&, int datoOp);
+void buscarElemento(struct nodo*, int datoB);
+void eliminarNodo(struct nodo *&, int datoE);
 void preOrden (struct nodo *);
 void inOrden(struct nodo *);
 void postOrden(struct nodo *);
 
-//Estructura del arbol
+//Estructura nodo
 
-struct nodo {
-
-    struct nodo *izquierda;
-    int datoN;
+struct nodo{
     struct nodo *derecha;
-    struct nodo *padre; 
-
+    int datoN;
+    struct nodo *izquierda;
 };
 
 //Codigo
-
 int main(){
-
-    //Se crea el nodo apuntado a vacio
-    struct nodo *p;
-    p = NULL;
-    int op = 1; 
-    do {
-        int opcion;
-        printf("Opcion: ");
+    // Se crear el nodo para la primera vez
+    nodo *arbol = NULL;
+    //Para el funcionamiento del do/while
+    int op =1; 
+    do{
+        int opcion; 
+        int salida;
+        printf("Arboles Binarios\nSelecciones alguna de las siguies opciones:");
+        printf("\n1.Insertar nodo\n2.Buscar nodo\n3.Eliminar nodo\n4.Salir\nInserte opcion:");
         scanf("%i", &opcion);
         switch (opcion){
             case 1:
-                int datoF;
-                printf("Por favor ingrese un dato: ");
-                scanf("%i", &datoF);
-                insertar(&p, datoF);
-                op = 1;
-            break;
-            case 2:
-                printf("El recorrido en preOrden del arbol es: ");
-                preOrden(p);
+                //Caso INSERTAR
+                int datoOp;
+                printf("Por favor ingrese un valor: ");
+                scanf("%i", &datoOp);
+                insertarNodo(arbol, datoOp);
+                printf("\nRecorrido en preOrden: ");
+                preOrden(arbol);
+                printf("\nRecorrido en inOrden: ");
+                inOrden(arbol);
+                printf("\nRecorrido en postOrden: ");
+                postOrden(arbol);
                 printf("\n");
                 op = 1; 
             break;
-            case 3:
-                printf("El recorrido en inOrden del arbol es: ");
-                inOrden(p);
+            case 2: 
+                //Caso BUSCAR
+                int datoB; 
+                printf("Por favor ingresar el valor a buscar: ");
+                scanf("%i", &datoB);
+                buscarElemento(arbol, datoB);
+                op = 1; 
+            break;
+            case 3: 
+                //Caso ELIMINAR
+                int datoE; 
+                printf("Por favor ingresar el valor a eliminar: ");
+                scanf("%i", &datoE);
+                eliminarNodo(arbol, datoE);
+                printf("\nRecorrido en preOrden: ");
+                preOrden(arbol);
+                printf("\nRecorrido en inOrden: ");
+                inOrden(arbol);
+                printf("\nRecorrido en postOrden: ");
+                postOrden(arbol);
                 printf("\n");
                 op = 1; 
             break;
             case 4:
-                printf("El recorrido en postOrden del arbol es: ");
-                postOrden(p);
-                printf("\n");
-                op = 1; 
-            break;
-            case 5:
-                int dato;
-                printf("Por favor ingrese el dato que desea buscar: ");
-                scanf("%i", &dato);
-                buscarElemento(&p, dato);
-                op = 1; 
-            break;
-            case 6:
-                //Caso -> Eliminar
-                int datoE;
-                printf("Por favor ingrese el dato que desea eliminar: ");
-                scanf("%i", &datoE);
-                eliminarNodo(&p, datoE);
-                op = 1;
+                //Caso SALIR 
+                printf("Usted realmente quiere salir del programa \n");
+                printf("1.Si\n2.No\nopcion: ");
+                scanf("%d", &salida);
+                if (salida == 1){
+                    op = 0;
+                }else{ 
+                    op = 1;
+                }
             break;
             default:
-                op = 0; 
+                printf("\nUsted ha ingresado una opcion incorrecta. Por favor ingrese de nuevo la opcion");
             break;
         }
-    } while(op==1);
-    
+    }while(op==1);
 }
-
 //Funciones
 
-void insertar(struct nodo **p, int datoF){
-    // Se crea una copia del arbol
-    struct nodo *q; 
-    //Para registar el dato
-    int flag = 0;
-    
-    q = localizar; 
-    q->datoN = datoF;
-    q->izquierda = NULL;
-    q->derecha = NULL;
-
-    //Caso 1: Cuando el arbol no exixste
-    if (*p == NULL){
-        *p = q;
-    }else{
-        struct nodo *aux = *p; // Copia de P para ir recorriendo
-        
-        while(flag == 0){
-            //Recorrido del arbol
-            //Caso 2: Cuando el dato ingresado es menor
-            if (datoF < aux->datoN){
-                if (aux->izquierda != NULL){
-                    aux = aux->izquierda;
-                    flag = 0;
-                }else{
-                    aux->izquierda = q;
-                    flag=1;
-                }
+void insertarNodo(struct nodo *&arbol, int datoOp){
+    //Estructura del nuevo nodo
+    // Se pregunta si el arbol esta vacio
+    if(arbol != NULL){
+        if(datoOp < arbol->datoN){
+            insertarNodo(arbol->izquierda, datoOp);
+        }else{
+            if (datoOp > arbol->datoN){
+                insertarNodo(arbol->derecha, datoOp);
             }else{
-                // Caso 3: Cuando el dato ingresado es mayor
-                //Recorrido del arbol
-                if (aux->derecha != NULL){
-                    aux = aux->derecha;
-                    flag = 0; 
-                }else{
-                    aux->derecha=q;
-                    flag=1; 
-                }
+                printf("Dato repetido por favor ingresar otro numero\n");
             }
         }
+    }else{
+        //Para insertar un nuevo NODO
+        struct nodo *nuevoNodo; 
+        nuevoNodo = localizar;
+        nuevoNodo->izquierda = NULL;
+        nuevoNodo->derecha = NULL;
+        nuevoNodo->datoN = datoOp;
+        arbol = nuevoNodo;
     }
+    //LLamado a cada uno de los RECORRIDOS para visualizacon
+    
 }
-void buscarElemento (struct nodo **p, int dato){
-    struct nodo *aux = *p;
-    //Caso 1: Arbol esta vacio      
-    if (*p==NULL){
+void buscarElemento (struct nodo *arbol, int datoB){
+    //Se pregunta si el arbol esta vacio
+    if (arbol==NULL){
         printf("Arbol esta vacio o el dato no existe\n");
     }else{
-        if (dato == aux->datoN){
-            printf("El dato se ha encontrado.\nValor encontrado: %i \n", aux->datoN);
+        if (datoB == arbol->datoN){
+            printf("El dato se ha encontrado.\nValor encontrado: %i \n", arbol->datoN);
         }else{
-            if (dato < aux->datoN){
-                aux = aux->izquierda;
-                *p = aux;
-                buscarElemento(p, dato);
+            //Movimiento por la IZQUIERDA
+            if (datoB < arbol->datoN){
+                buscarElemento(arbol->izquierda, datoB);
             }else{
-                aux = aux ->derecha;
-                *p = aux;
-                buscarElemento(p, dato);
+                //Movimiento por la DERECHA
+                buscarElemento(arbol->derecha, datoB);
             }
         }
     }
 }
-
-void eliminarNodo(struct nodo **p, int datoE){
-    // Se crea una copia del arbol para trabajar con ella
-    struct nodo *aux = *p;
-    //Recorrido del arbol
-    //Para cuando el arbol esta vacio
-    if (*p == NULL){
-        printf("Arbol se encuentra vacio no hay elementos para eliminar. \n");
-    }else if (datoE < aux->datoN){
-        // Cuando el dato a elimnar es menor al dato del NODO
-        aux = aux->izquierda; 
-        *p=aux; 
-        printf("IZ\n");
-        eliminarNodo(p,datoE);
-    }else if(datoE > aux->datoN){
-        //Cuando el dato a eliminar es mayor al dato del NODO
-        aux = aux->derecha;
-        *p=aux; 
-        printf("DR\n");
-        eliminarNodo(p,datoE);
+void eliminarNodo(struct nodo *&arbol, int datoE){
+    //Se pregunta si el arbol esta vacio
+    if (arbol != NULL){
+        //Se pregunta por el recorrido a IZQUIERDA
+        if (datoE < arbol->datoN){
+            eliminarNodo(arbol->izquierda, datoE);
+        }else{
+            //Se pregunta por el recorrido a DERECHa
+            if(datoE > arbol->datoN){
+                eliminarNodo(arbol->derecha, datoE);
+            }else{
+                //Dato eliminar = Dato arbol
+                int datoEliminado = arbol->datoN;
+                //Se crea copia del nodo evaluado
+                struct nodo *nodo;
+                nodo = arbol; 
+                // Verificacion si hay NODOS por la DERECHA
+                
+                if(nodo->derecha == NULL){
+                    arbol = nodo->izquierda;
+                }else{
+                    // Verificacion si hay NODOS por la IZQUIERDA
+                    if(nodo->izquierda == NULL){
+                        arbol = nodo->derecha;
+                    }else{
+                        printf("tuki3\n");
+                        //Cuando el NODO tiene dos SUBARBOLES
+                        struct nodo *aux = arbol->izquierda;
+                        struct nodo *aux1; 
+                        bool bandera = false;
+                        while (aux->derecha != NULL){
+                            aux1 = aux;
+                            aux = aux->derecha;
+                            bandera = true;
+                        }
+                        arbol->datoN = aux->datoN;
+                        nodo = aux;
+                        if (bandera == true){
+                            aux1->derecha = aux->izquierda;
+                        }else{
+                            arbol->izquierda = aux->izquierda;
+                        }
+                    }
+                }
+                printf("\nDato eliminado: %i", datoEliminado);
+                delete nodo;
+            }
+        }
     }else{
-        //Cuando el dato a eliminar es igual al dato NODO
-        
-        //Caso 1: Nodo con subarbol derecho e izquierdo
-        if (aux->derecha && aux->izquierda){
-            printf("tuki 1\n");
-            printf("dato aux: %i\n", aux->datoN);
-            //Evaluando la parte mas izquierda del sub arbol derecho
-            struct nodo *q;
-            q = *p;
-            q = q->derecha; 
-            while (q->izquierda != NULL){
-                q = q->izquierda; 
-            }
-            printf("El nodo mas izquierdo es: %i\n", q->datoN);
-            // Reemplazo del nodo mas izquierdo por el nodo a eliminar
-            aux->datoN = q->datoN;
-        }
-        //Caso 2: Nodo con subarbol derecho o izquierdo
-        if (aux->izquierda == NULL && aux->derecha!=NULL){
-            printf("tuki 2\n");
-            struct nodo *q; 
-            q = *p;
-            q = q->derecha;
-            aux = q; 
-            q->derecha = NULL;
-            q->izquierda = NULL;
-            delete q;
-        }
+        printf("El arbol no tiene elementos para eliminar o el elemento no esta dentro del arbol.\n");
     }
-
-
-
-
-//Caso 3: Nodo hoja
-
-
-
-
 }
-
-
-
-void preOrden (struct nodo *p){
-    
-    if (p!=NULL){
-        printf("%i\t", p->datoN);
-        preOrden(p->izquierda);
-        preOrden(p->derecha);
+void preOrden (struct nodo *arbol){   
+    if (arbol!=NULL){
+        printf("%i\t",arbol->datoN);
+        preOrden(arbol->izquierda);
+        preOrden(arbol->derecha);
     }
-
 }
-void inOrden(struct nodo *p){
-
-    if (p!=NULL){
-        inOrden(p->izquierda);
-        printf("%i\t", p->datoN); 
-        inOrden(p->derecha);
+void inOrden(struct nodo *arbol){
+    if (arbol!=NULL){
+        inOrden(arbol->izquierda);
+        printf("%i\t",arbol->datoN);
+        inOrden(arbol->derecha);
     }
-
 }
-void postOrden(struct nodo *p){
-
-    if (p!=NULL){
-        postOrden(p->izquierda);
-        postOrden(p->derecha);
-        printf("%i\t", p->datoN); 
+void postOrden(struct nodo *arbol){
+    if (arbol!=NULL){
+        postOrden(arbol->izquierda);
+        postOrden(arbol->derecha);
+        printf("%i\t",arbol->datoN); 
     }
-
 }
